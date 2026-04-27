@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.centraldeimoveis.api.model.administrador.Administrador;
 import com.centraldeimoveis.api.model.administrador.AdministradorRepository;
-import com.centraldeimoveis.api.model.administrador.DadosAtualizacaoAdministrador;
+import com.centraldeimoveis.api.model.administrador.DadosAtualizacaAdministrador;
 import com.centraldeimoveis.api.model.administrador.DadosCadastroAdministrador;
 import com.centraldeimoveis.api.model.administrador.DadosListagemAdministrador;
 
@@ -46,7 +46,7 @@ public class AdministradorController {
 
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody DadosAtualizacaoAdministrador dados) {
+    public void atualizar(@RequestBody DadosAtualizacaAdministrador dados) {
         var admnistrador = repository.getReferenceById(dados.id());
         admnistrador.atualizarAdmnistrador(dados);
     }

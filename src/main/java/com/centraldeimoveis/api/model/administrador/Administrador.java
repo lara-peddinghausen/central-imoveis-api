@@ -43,7 +43,7 @@ public class Administrador {
         this.cpf = dados.cpf();      
     }
 
-    public void atualizarAdmnistrador(DadosAtualizacaoAdministrador dados) {
+    public void atualizarAdmnistrador(DadosAtualizacaAdministrador dados) {
         if(dados.nome() != null) {
             this.nome = dados.nome();
         }

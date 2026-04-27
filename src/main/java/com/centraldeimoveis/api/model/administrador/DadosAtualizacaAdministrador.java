@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Past;
 
-public record DadosAtualizacaoAdministrador(
+public record DadosAtualizacaAdministrador(
     Integer id,
     String nome,
     String senha,
