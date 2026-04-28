@@ -18,14 +18,6 @@ import com.centraldeimoveis.api.model.administrador.DadosListagemAdministrador;
 
 import jakarta.transaction.Transactional;
 
-
-/**
- * 
- * 
- * @author Lara Peddinghausen
- * @date 31/03/2026
- * 
- */
 @RestController
 @RequestMapping("/administrador")
 public class AdministradorController {
@@ -48,6 +40,6 @@ public class AdministradorController {
     @Transactional
     public void atualizar(@RequestBody DadosAtualizacaAdministrador dados) {
         var admnistrador = repository.getReferenceById(dados.id());
-        admnistrador.atualizarAdmnistrador(dados);
+        admnistrador.atualizarAdministrador(dados);
     }
 }

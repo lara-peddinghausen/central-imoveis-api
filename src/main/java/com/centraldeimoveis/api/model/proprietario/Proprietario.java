@@ -6,9 +6,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 /**
+ * Representa um proprietário do sistema de central de imóveis.
+ * 
+ * Contém informações pessoais como nome, e-mail, CPF, telefone e data de nascimento.
  * 
  * @author Lara Peddinghausen
- * @date 14/04/2026
  * 
  */
 @Getter
@@ -30,6 +32,11 @@ public class Proprietario {
     private String cpf;
     private String telefone;
 
+    /**
+     * Cria um proprietário a partir dos dados de cadastro.
+     *
+     * @param dados objeto contendo as informações necessárias para criação do proprietário
+     */
     public Proprietario(DadosCadastroProprietario dados) {
         this.email = dados.email();
         this.nome = dados.nome();
@@ -38,6 +45,12 @@ public class Proprietario {
         this.telefone = dados.telefone();
     }
 
+    /**
+     * Atualiza os dados do proprietário com base nas informações fornecidas.
+     * Apenas os campos não nulos serão atualizados.
+     *
+     * @param dados objeto com os dados para atualização
+     */
     public void atualizarProprietario(DadosAtualizaProprietario dados) {
         if (dados.nome() != null) {
             this.nome = dados.nome();
