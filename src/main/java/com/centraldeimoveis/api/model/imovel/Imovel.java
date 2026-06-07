@@ -1,6 +1,7 @@
 package com.centraldeimoveis.api.model.imovel;
 
 import com.centraldeimoveis.api.model.administrador.Administrador;
+import com.centraldeimoveis.api.model.proprietario.Proprietario;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,18 +42,18 @@ public class Imovel {
     @JoinColumn(name = "id_administrador") // FK
     private Administrador administrador;
 
-    // @Embedded
-    // @ManyToOne
-    // @JoinColumn(name = "idProprietario")
-    // private Proprietario idProprietario;
+    @ManyToOne
+    @JoinColumn(name = "id_proprietario")
+    private Proprietario proprietario;
 
     /**
      * Cria um imóvel a partir dos dados de cadastro.
      *
      * @param dados objeto contendo as informações necessárias para criação do imóvel
      * @param administrador o administrador responsável pelo imóvel
+     * @param proprietario o proprietário do imóvel
      */
-    public Imovel(DadosCadastroImovel dados, Administrador administrador) {
+    public Imovel(DadosCadastroImovel dados, Administrador administrador, Proprietario proprietario) {
         this.nome = dados.nome();
         this.rua = dados.rua();
         this.cep = dados.cep();
@@ -61,7 +62,19 @@ public class Imovel {
         this.tipoLocacao = dados.tipoLocacao();
         this.status = dados.status();
         this.administrador = administrador;
-        // this.idProprietario = dados.idProprietario();
+        this.proprietario = proprietario;
+    }
+
+    /**
+     * Atualiza os dados do imóvel com base nas informações fornecidas.
+     * Apenas os campos não nulos serão atualizados.
+     *
+     * @param dados objeto com os dados para atualização
+     */
+    public void atualizarImovel(DadosAtualizaImovel dados) {
+        if (dados.nome() != null) {
+            this.nome = dados.nome();
+        }
     }
 
 }

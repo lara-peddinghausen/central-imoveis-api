@@ -1,8 +1,5 @@
 package com.centraldeimoveis.api.model.imovel;
 
-// import com.centraldeimoveis.api.model.administrador.Administrador;
-//import com.centraldeimoveis.api.model.proprietario.Proprietario;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -28,10 +25,10 @@ public record DadosCadastroImovel(
     Status status,
 
     @NotNull
-    Integer administrador
+    Integer administrador,
 
-    // @NotNull
-    // Proprietario idProprietario
+    @NotNull
+    Integer proprietario
 
 ) {
     
