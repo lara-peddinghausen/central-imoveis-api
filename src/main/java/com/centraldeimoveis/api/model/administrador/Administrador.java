@@ -54,7 +54,7 @@ public class Administrador {
      *
      * @param dados objeto com os dados para atualização
      */
-    public void atualizarAdministrador(DadosAtualizacaAdministrador dados) {
+    public void atualizarAdministrador(DadosAtualizaAdministrador dados) {
         if (dados.nome() != null) {
             this.nome = dados.nome();
         }
