@@ -1,6 +1,8 @@
-package com.centraldeimoveis.api.model.administrador;
+package com.centraldeimoveis.api.dto.administrador;
 
 import java.time.LocalDate;
+
+import com.centraldeimoveis.api.model.administrador.Administrador;
 
 public record DadosListagemAdministrador(
     Integer id,

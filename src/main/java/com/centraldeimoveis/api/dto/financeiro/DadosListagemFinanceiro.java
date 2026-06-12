@@ -1,8 +1,10 @@
-package com.centraldeimoveis.api.model.financeiro;
+package com.centraldeimoveis.api.dto.financeiro;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.centraldeimoveis.api.model.financeiro.Financeiro;
+import com.centraldeimoveis.api.model.financeiro.TipoMovimentacao;
 import com.centraldeimoveis.api.model.imovel.Imovel;
 
 public record DadosListagemFinanceiro(

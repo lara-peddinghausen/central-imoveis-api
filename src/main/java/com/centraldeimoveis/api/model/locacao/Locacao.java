@@ -3,6 +3,8 @@ package com.centraldeimoveis.api.model.locacao;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.centraldeimoveis.api.dto.locacao.DadosAtualizaLocacao;
+import com.centraldeimoveis.api.dto.locacao.DadosCadastroLocacao;
 import com.centraldeimoveis.api.model.imovel.Imovel;
 import com.centraldeimoveis.api.model.pessoa.Pessoa;
 

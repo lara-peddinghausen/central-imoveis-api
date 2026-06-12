@@ -2,6 +2,9 @@ package com.centraldeimoveis.api.model.proprietario;
 
 import java.time.LocalDate;
 
+import com.centraldeimoveis.api.dto.proprietario.DadosAtualizaProprietario;
+import com.centraldeimoveis.api.dto.proprietario.DadosCadastroProprietario;
+
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,5 +1,7 @@
 package com.centraldeimoveis.api.model.imovel;
 
+import com.centraldeimoveis.api.dto.imovel.DadosAtualizaImovel;
+import com.centraldeimoveis.api.dto.imovel.DadosCadastroImovel;
 import com.centraldeimoveis.api.model.administrador.Administrador;
 import com.centraldeimoveis.api.model.proprietario.Proprietario;
 

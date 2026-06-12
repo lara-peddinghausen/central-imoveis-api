@@ -1,6 +1,7 @@
-package com.centraldeimoveis.api.model.administrador;
+package com.centraldeimoveis.api.dto.proprietario;
 
 import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.Valid;
@@ -9,13 +10,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
-public record DadosCadastroAdministrador(
-
-    @NotBlank
-    String senha,
-
+public record DadosCadastroProprietario(
+    
     @Email
-    @NotBlank
     String email,
 
     @NotBlank
@@ -26,8 +23,11 @@ public record DadosCadastroAdministrador(
     @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate dataNascimento,
 
-    @NotNull @Valid
-    String cpf
+    @NotNull
+    @Valid
+    String cpf,
+    
+    String telefone
 ) {
     
 }

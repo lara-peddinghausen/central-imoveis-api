@@ -1,8 +1,8 @@
-package com.centraldeimoveis.api.model.financeiro;
+package com.centraldeimoveis.api.dto.financeiro;
 
 import java.math.BigDecimal;
 
-public record DadosTotalFinanceiroDTO(
+public record DadosTotalFinanceiro(
     BigDecimal totalReceitas,
     BigDecimal totalDespesas,
     BigDecimal saldo // Opcional: receitas - despesas 

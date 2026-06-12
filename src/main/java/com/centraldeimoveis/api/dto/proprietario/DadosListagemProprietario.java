@@ -1,6 +1,8 @@
-package com.centraldeimoveis.api.model.proprietario;
+package com.centraldeimoveis.api.dto.proprietario;
 
 import java.time.LocalDate;
+
+import com.centraldeimoveis.api.model.proprietario.Proprietario;
 
 
 public record DadosListagemProprietario(

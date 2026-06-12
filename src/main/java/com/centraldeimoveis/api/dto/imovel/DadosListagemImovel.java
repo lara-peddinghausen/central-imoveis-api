@@ -1,6 +1,9 @@
-package com.centraldeimoveis.api.model.imovel;
+package com.centraldeimoveis.api.dto.imovel;
 
 import com.centraldeimoveis.api.model.administrador.Administrador;
+import com.centraldeimoveis.api.model.imovel.Imovel;
+import com.centraldeimoveis.api.model.imovel.Status;
+import com.centraldeimoveis.api.model.imovel.TipoLocacao;
 import com.centraldeimoveis.api.model.proprietario.Proprietario;
 
 public record DadosListagemImovel(

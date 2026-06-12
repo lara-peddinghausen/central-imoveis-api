@@ -2,6 +2,9 @@ package com.centraldeimoveis.api.model.pessoa;
 
 import java.time.LocalDate;
 
+import com.centraldeimoveis.api.dto.pessoa.DadosAtualizaPessoa;
+import com.centraldeimoveis.api.dto.pessoa.DadosCadastroPessoa;
+
 import jakarta.persistence.*;
 import lombok.*;
 

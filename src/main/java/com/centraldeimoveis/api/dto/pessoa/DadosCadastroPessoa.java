@@ -1,4 +1,4 @@
-package com.centraldeimoveis.api.model.proprietario;
+package com.centraldeimoveis.api.dto.pessoa;
 
 import java.time.LocalDate;
 
@@ -10,8 +10,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
-public record DadosCadastroProprietario(
-    
+public record DadosCadastroPessoa(
+        
     @Email
     String email,
 
@@ -29,5 +29,4 @@ public record DadosCadastroProprietario(
     
     String telefone
 ) {
-    
-}
+} 

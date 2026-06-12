@@ -1,6 +1,8 @@
-package com.centraldeimoveis.api.model.pessoa;
+package com.centraldeimoveis.api.dto.pessoa;
 
 import java.time.LocalDate;
+
+import com.centraldeimoveis.api.model.pessoa.Pessoa;
 
 public record DadosListagemPessoa(
     Integer id,

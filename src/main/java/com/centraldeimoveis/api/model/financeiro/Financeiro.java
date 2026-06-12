@@ -3,6 +3,8 @@ package com.centraldeimoveis.api.model.financeiro;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.centraldeimoveis.api.dto.financeiro.DadosAtualizaFinanceiro;
+import com.centraldeimoveis.api.dto.financeiro.DadosCadastroFinanceiro;
 import com.centraldeimoveis.api.model.imovel.Imovel;
 
 import jakarta.persistence.*;

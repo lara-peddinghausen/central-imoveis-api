@@ -1,4 +1,4 @@
-package com.centraldeimoveis.api.model.financeiro;
+package com.centraldeimoveis.api.dto.financeiro;
 
 import java.math.BigDecimal;
 

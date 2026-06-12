@@ -1,4 +1,4 @@
-package com.centraldeimoveis.api.model.administrador;
+package com.centraldeimoveis.api.dto.administrador;
 
 import java.time.LocalDate;
 

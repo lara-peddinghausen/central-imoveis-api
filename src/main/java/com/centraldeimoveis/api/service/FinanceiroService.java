@@ -1,6 +1,13 @@
-package com.centraldeimoveis.api.model.financeiro;
+package com.centraldeimoveis.api.service;
 
-import com.centraldeimoveis.api.model.imovel.ImovelRepository;
+import com.centraldeimoveis.api.dto.financeiro.DadosAgrupadosMes;
+import com.centraldeimoveis.api.dto.financeiro.DadosCadastroFinanceiro;
+import com.centraldeimoveis.api.dto.financeiro.DadosFluxoFinanceiro;
+import com.centraldeimoveis.api.dto.financeiro.DadosTotalFinanceiro;
+import com.centraldeimoveis.api.model.financeiro.Financeiro;
+import com.centraldeimoveis.api.repository.FinanceiroRepository;
+import com.centraldeimoveis.api.repository.ImovelRepository;
+
 import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +56,7 @@ public class FinanceiroService {
         return financeiroRepository.save(novaMovimentacao);
     }
 
-    public DadosFluxoFinanceiroDTO calcularFluxoGrafico(Integer idImovel, String visualizacao) {
+    public DadosFluxoFinanceiro calcularFluxoGrafico(Integer idImovel, String visualizacao) {
         // 1. Valida se o imóvel existe antes de computar
         if (!imovelRepository.existsById(idImovel)) {
             throw new ValidationException("Imóvel não encontrado para gerar o fluxo!");
@@ -84,11 +91,11 @@ public class FinanceiroService {
                 "Dez");
 
         // Retorna o DTO perfeitamente montado e com dados dinâmicos reais!
-        return new DadosFluxoFinanceiroDTO(labels, receitas, despesas);
+        return new DadosFluxoFinanceiro(labels, receitas, despesas);
     }
 
     @Transactional(readOnly = true)
-    public DadosTotalFinanceiroDTO obterTotaisGerais(Integer idImovel) {
+    public DadosTotalFinanceiro obterTotaisGerais(Integer idImovel) {
         // 1. Valida se o imóvel existe
         if (!imovelRepository.existsById(idImovel)) {
             throw new ValidationException("Imóvel não encontrado!");
@@ -102,6 +109,6 @@ public class FinanceiroService {
         BigDecimal saldo = totalReceitas.subtract(totalDespesas);
 
         // 4. Retorna os dados prontos para os cards do frontend
-        return new DadosTotalFinanceiroDTO(totalReceitas, totalDespesas, saldo);
+        return new DadosTotalFinanceiro(totalReceitas, totalDespesas, saldo);
     }
 }
