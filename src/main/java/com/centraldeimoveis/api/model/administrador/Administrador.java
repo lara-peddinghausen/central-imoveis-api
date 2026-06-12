@@ -1,6 +1,16 @@
 package com.centraldeimoveis.api.model.administrador;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.centraldeimoveis.api.dto.administrador.DadosAtualizaAdministrador;
+import com.centraldeimoveis.api.dto.administrador.DadosCadastroAdministrador;
+
 // import java.util.List;
 // import com.centraldeimoveis.api.model.imovel.Imovel;
 import jakarta.persistence.*;
@@ -19,17 +29,26 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
+@Data
 @Table(name = "administrador")
-public class Administrador {
+public class Administrador implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false, length = 255)
     private String senha;
+
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
+    
+    @Column(nullable = false, length = 150)
     private String nome;
+    
     private LocalDate dataNascimento;
+
+    @Column(length = 14)
     private String cpf;
 
     // @OneToMany(mappedBy = "administrador")
@@ -65,4 +84,29 @@ public class Administrador {
             this.dataNascimento = dados.dataNascimento();
         }
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Retorna ROLE_ADMIN direto em memória, economizando uma coluna no seu banco
+        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
+
+    @Override
+    public String getPassword() { return this.senha; }
+
+    @Override
+    public String getUsername() { return this.email; }
+
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return true; }
+
 }
