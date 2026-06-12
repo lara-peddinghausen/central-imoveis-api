@@ -5,14 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import com.centraldeimoveis.api.model.financeiro.DadosAtualizaFinanceiro;
-import com.centraldeimoveis.api.model.financeiro.DadosCadastroFinanceiro;
-import com.centraldeimoveis.api.model.financeiro.DadosListagemFinanceiro;
+import com.centraldeimoveis.api.dto.financeiro.DadosAtualizaFinanceiro;
+import com.centraldeimoveis.api.dto.financeiro.DadosCadastroFinanceiro;
+import com.centraldeimoveis.api.dto.financeiro.DadosFluxoFinanceiro;
+import com.centraldeimoveis.api.dto.financeiro.DadosListagemFinanceiro;
 import com.centraldeimoveis.api.model.financeiro.Financeiro;
-import com.centraldeimoveis.api.model.financeiro.FinanceiroRepository;
-import com.centraldeimoveis.api.model.imovel.ImovelRepository;
-import com.centraldeimoveis.api.model.financeiro.FinanceiroService;
-import com.centraldeimoveis.api.model.financeiro.DadosFluxoFinanceiroDTO;
+import com.centraldeimoveis.api.repository.FinanceiroRepository;
+import com.centraldeimoveis.api.repository.ImovelRepository;
+import com.centraldeimoveis.api.service.FinanceiroService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,7 +84,7 @@ public class FinanceiroController {
 
     // Rota que alimenta o gráfico do React Native (visto na tabela de rotas do PDF)
     @GetMapping("/{id}/financeiro/fluxo")
-    public DadosFluxoFinanceiroDTO visualizarFluxoFinanceiro(
+    public DadosFluxoFinanceiro visualizarFluxoFinanceiro(
             @PathVariable Integer id,
             @RequestParam(defaultValue = "mensal") String visualizacao) {
 

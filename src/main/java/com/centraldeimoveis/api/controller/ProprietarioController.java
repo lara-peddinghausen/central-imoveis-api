@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.centraldeimoveis.api.model.proprietario.DadosAtualizaProprietario;
-import com.centraldeimoveis.api.model.proprietario.DadosCadastroProprietario;
-import com.centraldeimoveis.api.model.proprietario.DadosListagemProprietario;
+import com.centraldeimoveis.api.dto.proprietario.DadosAtualizaProprietario;
+import com.centraldeimoveis.api.dto.proprietario.DadosCadastroProprietario;
+import com.centraldeimoveis.api.dto.proprietario.DadosListagemProprietario;
 import com.centraldeimoveis.api.model.proprietario.Proprietario;
-import com.centraldeimoveis.api.model.proprietario.ProprietarioRepository;
+import com.centraldeimoveis.api.repository.ProprietarioRepository;
 
 import jakarta.transaction.Transactional;
 

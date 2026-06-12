@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.centraldeimoveis.api.model.administrador.AdministradorRepository;
-import com.centraldeimoveis.api.model.proprietario.ProprietarioRepository;
-import com.centraldeimoveis.api.model.imovel.DadosAtualizaImovel;
-import com.centraldeimoveis.api.model.imovel.DadosCadastroImovel;
-import com.centraldeimoveis.api.model.imovel.DadosListagemImovel;
+import com.centraldeimoveis.api.dto.imovel.DadosAtualizaImovel;
+import com.centraldeimoveis.api.dto.imovel.DadosCadastroImovel;
+import com.centraldeimoveis.api.dto.imovel.DadosListagemImovel;
 import com.centraldeimoveis.api.model.imovel.Imovel;
-import com.centraldeimoveis.api.model.imovel.ImovelRepository;
+import com.centraldeimoveis.api.repository.AdministradorRepository;
+import com.centraldeimoveis.api.repository.ImovelRepository;
+import com.centraldeimoveis.api.repository.ProprietarioRepository;
 
 import jakarta.transaction.Transactional;
 
