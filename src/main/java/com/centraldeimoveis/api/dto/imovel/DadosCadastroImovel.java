@@ -14,12 +14,24 @@ public record DadosCadastroImovel(
     @NotBlank
     String rua,
 
+    @NotBlank
     String cep,
 
     @NotBlank
     String numero,
 
     String complemento,
+
+    @NotBlank 
+    String bairro,
+
+    @NotBlank 
+    String cidade,
+
+    @NotBlank
+    String estado,
+
+    String fotoUrl,
 
     @NotNull
     TipoLocacao tipoLocacao,
@@ -30,7 +42,6 @@ public record DadosCadastroImovel(
     @NotNull
     Integer administrador,
 
-    @NotNull
     Integer proprietario
 
 ) {

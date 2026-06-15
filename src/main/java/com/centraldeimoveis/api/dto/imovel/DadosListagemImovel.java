@@ -13,12 +13,16 @@ public record DadosListagemImovel(
     String cep,
     String numero,
     String complemento,
+    String bairro,
+    String cidade,
+    String estado,
+    String fotoUrl,
     TipoLocacao tipoLocacao,
     Status status,
     Administrador administrador,
     Proprietario proprietario
 ) {
     public DadosListagemImovel(Imovel imovel) {
-        this(imovel.getId(), imovel.getNome(), imovel.getRua(), imovel.getCep(), imovel.getNumero(), imovel.getComplemento(), imovel.getTipoLocacao(), imovel.getStatus(), imovel.getAdministrador(), imovel.getProprietario());
+        this(imovel.getId(), imovel.getNome(), imovel.getRua(), imovel.getCep(), imovel.getNumero(), imovel.getComplemento(), imovel.getBairro(),imovel.getCidade(), imovel.getEstado() , imovel.getFotoUrl(),imovel.getTipoLocacao(), imovel.getStatus(), imovel.getAdministrador(), imovel.getProprietario());
     }
 }
