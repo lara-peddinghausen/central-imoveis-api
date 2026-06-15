@@ -29,10 +29,16 @@ public class Proprietario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(length = 150)
     private String email;
+
+    @Column(nullable = false, length = 150)
     private String nome;
     private LocalDate dataNascimento;
+
+    @Column(nullable = false, unique = true, length = 11)
     private String cpf;
+
     private String telefone;
 
     /**

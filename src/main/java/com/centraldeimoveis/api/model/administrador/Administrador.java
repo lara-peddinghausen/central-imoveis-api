@@ -48,7 +48,7 @@ public class Administrador implements UserDetails {
     
     private LocalDate dataNascimento;
 
-    @Column(length = 14)
+    @Column(unique = true, length = 11)
     private String cpf;
 
     // @OneToMany(mappedBy = "administrador")
