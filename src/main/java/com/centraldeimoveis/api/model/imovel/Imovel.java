@@ -11,7 +11,8 @@ import lombok.*;
 /**
  * Representa um imóvel no sistema de central de imóveis.
  *
- * Contém informações como nome, endereço (rua, número, CEP e complemento), tipo de locação, status e o administrador responsável.
+ * Contém informações como nome, endereço, tipo
+ * de locação, status, proprietário e o administrador responsável.
  *
  * @author Lara Peddinghausen
  */
@@ -33,27 +34,32 @@ public class Imovel {
     private String cep;
     private String numero;
     private String complemento;
+    private String bairro;
+    private String cidade;
+    private String estado;
+    private String fotoUrl;
 
     @Enumerated(EnumType.STRING)
     private TipoLocacao tipoLocacao;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.DISPONIVEL;
 
     @ManyToOne
-    @JoinColumn(name = "id_administrador") // FK
+    @JoinColumn(name = "id_administrador")
     private Administrador administrador;
 
-    @ManyToOne
-    @JoinColumn(name = "id_proprietario")
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "id_proprietario", nullable = true)
     private Proprietario proprietario;
 
     /**
      * Cria um imóvel a partir dos dados de cadastro.
      *
-     * @param dados objeto contendo as informações necessárias para criação do imóvel
+     * @param dados         objeto contendo as informações necessárias para criação
+     *                      do imóvel
      * @param administrador o administrador responsável pelo imóvel
-     * @param proprietario o proprietário do imóvel
+     * @param proprietario  o proprietário do imóvel
      */
     public Imovel(DadosCadastroImovel dados, Administrador administrador, Proprietario proprietario) {
         this.nome = dados.nome();
@@ -61,10 +67,17 @@ public class Imovel {
         this.cep = dados.cep();
         this.numero = dados.numero();
         this.complemento = dados.complemento();
+        this.bairro = dados.bairro();
+        this.cidade = dados.cidade();
+        this.estado = dados.estado();
+        this.fotoUrl = dados.fotoUrl();
         this.tipoLocacao = dados.tipoLocacao();
-        this.status = dados.status();
         this.administrador = administrador;
         this.proprietario = proprietario;
+
+        if (dados.status() != null) {
+            this.status = dados.status();
+        }
     }
 
     /**
@@ -73,9 +86,18 @@ public class Imovel {
      *
      * @param dados objeto com os dados para atualização
      */
-    public void atualizarImovel(DadosAtualizaImovel dados) {
+    public void atualizarImovel(DadosAtualizaImovel dados, Proprietario novoProprietario) {
         if (dados.nome() != null) {
             this.nome = dados.nome();
+        }
+        if (dados.status() != null) {
+            this.status = dados.status();
+        }
+        if (dados.proprietario() != null) {
+            this.proprietario = novoProprietario;
+        }
+        if (dados.fotoUrl() != null) {
+            this.fotoUrl = dados.fotoUrl();
         }
     }
 
