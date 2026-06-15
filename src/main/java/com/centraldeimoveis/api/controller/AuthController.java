@@ -37,23 +37,32 @@ public class AuthController {
         try {
             // 1. O Spring Security valida o e-mail e a senha encriptada automaticamente
             authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(req.email(), req.senha())
-            );
+                    new UsernamePasswordAuthenticationToken(req.email(), req.senha()));
 
-            // 🚀 NOVO: Busca o administrador do banco para termos acesso aos dados dele (nome, e-mail, etc.)
+            // Busca o administrador do banco para termos acesso aos dados dele (nome,
+            // e-mail, etc.)
             var administrador = administradorRepository.findByEmail(req.email())
-                .orElseThrow(() -> new BadCredentialsException("Usuário não encontrado"));
+                    .orElseThrow(() -> new BadCredentialsException("Usuário não encontrado"));
 
             // 2. Gera o token JWT com o e-mail do Administrador
             String token = jwtUtil.generateToken(req.email());
 
-            // 3. Retorna o JSON contendo o token, e-mail e a role para o React Native salvar 🚀
-            return ResponseEntity.ok(new AuthResponse(token, administrador.getEmail(), "ROLE_ADMIN"));
+            // 🚀 3. RETORNO ATUALIZADO: Enviando todos os dados para o React Native salvar
+            // e usar no Perfil!
+            return ResponseEntity.ok(new AuthResponse(
+                    token,
+                    administrador.getEmail(),
+                    "ROLE_ADMIN",
+                    administrador.getId(),
+                    administrador.getNome(), // ◄ NOVO
+                    administrador.getCpf(), // ◄ NOVO
+                    administrador.getDataNascimento() != null ? administrador.getDataNascimento().toString() : null // ◄                                                                                                   // nulo)
+            ));
 
         } catch (BadCredentialsException e) {
             return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("erro", "E-mail ou senha inválidos"));
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("erro", "E-mail ou senha inválidos"));
         }
     }
 }
