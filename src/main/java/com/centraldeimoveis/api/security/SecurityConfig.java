@@ -3,6 +3,7 @@ package com.centraldeimoveis.api.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,6 +51,8 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(org.springframework.http.HttpMethod.POST, "/auth/login").permitAll()       // Login público da apostila
             .requestMatchers(org.springframework.http.HttpMethod.POST, "/administrador").permitAll() // 🚀 Cadastro público do seu AdministradorController
+            .requestMatchers("/uploads/**").permitAll()// Atualizar conforme pasta usada para salvar imagens
+            .requestMatchers("/imovel", "/imovel/**").hasRole("ADMIN")
             .anyRequest().authenticated()                                                              // Todo o resto exige o token JWT
         )
 
