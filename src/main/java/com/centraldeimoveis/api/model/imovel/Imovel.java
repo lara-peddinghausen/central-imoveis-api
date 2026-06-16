@@ -90,6 +90,15 @@ public class Imovel {
         if (dados.nome() != null) {
             this.nome = dados.nome();
         }
+        if (dados.numero() != null) {
+            this.numero = dados.numero();
+        }
+        if (dados.complemento() != null) {
+            this.complemento = dados.complemento();
+        }
+        if (dados.tipoLocacao() != null) {
+            this.tipoLocacao = dados.tipoLocacao();
+        }
         if (dados.status() != null) {
             this.status = dados.status();
         }
