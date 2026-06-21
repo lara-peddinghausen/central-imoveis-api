@@ -1,4 +1,4 @@
-package com.centraldeimoveis.api.service;
+package com.centraldeimoveis.api.services;
 
 import com.centraldeimoveis.api.model.imovel.Imovel;
 import com.centraldeimoveis.api.model.locacao.Locacao;

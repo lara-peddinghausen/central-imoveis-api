@@ -3,7 +3,6 @@ package com.centraldeimoveis.api.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,14 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.centraldeimoveis.api.service.AdministradorDetailsService;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-  @Autowired private AdministradorDetailsService administradorDetailsService;
-  @Autowired private JwtAuthFilter jwtAuthFilter;
+  @Autowired
+  private JwtAuthFilter jwtAuthFilter;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -39,28 +36,27 @@ public class SecurityConfig {
       throws Exception {
 
     return http
-        // 1. Desativa CSRF — APIs REST não usam cookies de sessão
+        // Desativa CSRF — APIs REST não usam cookies de sessão
         .csrf(csrf -> csrf.disable())
 
-        // 2. Configura a sessão como stateless — o servidor não guarda estado
+        // Configura a sessão como stateless —> o servidor não guarda estado
         .sessionManagement(session -> session
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        )
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-        // 3. Regras de acesso por rota (Liberando login e cadastro inicial)
+        // Regras de acesso por rota
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers(org.springframework.http.HttpMethod.POST, "/auth/login").permitAll()       // Login público da apostila
-            .requestMatchers(org.springframework.http.HttpMethod.POST, "/administrador").permitAll() // 🚀 Cadastro público do seu AdministradorController
-            .requestMatchers("/uploads/**").permitAll()// Atualizar conforme pasta usada para salvar imagens
+            .requestMatchers(org.springframework.http.HttpMethod.POST, "/auth/login").permitAll() // Login público
+            .requestMatchers(org.springframework.http.HttpMethod.POST, "/administrador").permitAll() // Cadastro público do AdministradorController
+            .requestMatchers("/uploads/**").permitAll() // Atualizar conforme pasta usada para salvar imagens
             .requestMatchers("/imovel", "/imovel/**").hasRole("ADMIN")
-            .anyRequest().authenticated()                                                              // Todo o resto exige o token JWT
+            .anyRequest().authenticated() // Todo o resto exige o token JWT
         )
 
-        // 4. Adiciona o filtro JWT antes do filtro padrão de usuário/senha (Sintaxe Corrigida ✅)
+        // Adiciona o filtro JWT antes do filtro padrão de usuário/senha
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 
-        // 5. Constrói e retorna a cadeia de filtros configurada
+        // Constrói e retorna a cadeia de filtros configurada
         .build();
-}
+  }
 
 }

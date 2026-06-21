@@ -36,10 +36,10 @@ public class ProprietarioController {
 @Transactional
 public ResponseEntity<Object> cadastrar(@RequestBody @Valid DadosCadastroProprietario dados) {
     
-    // 1. Limpa o CPF tirando pontos e traços para testar o valor puro
+    // Limpa o CPF tirando pontos e traços para testar o valor puro
     String cpfLimpo = dados.cpf().replaceAll("\\D", "");
 
-    // 2. Regra de negócio: Se o CPF já existir, barra na hora!
+    // Se o CPF já existir, não cadastra
     if (proprietarioRepository.existsByCpf(cpfLimpo)) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

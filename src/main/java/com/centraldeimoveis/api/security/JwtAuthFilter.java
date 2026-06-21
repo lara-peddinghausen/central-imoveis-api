@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.centraldeimoveis.api.service.AdministradorDetailsService;
+import com.centraldeimoveis.api.services.AdministradorDetailsService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtAuthFilter
-    extends OncePerRequestFilter {   // executa exatamente 1x por request
+    extends OncePerRequestFilter { 
 
   @Autowired private JwtUtil jwtUtil;
   @Autowired private AdministradorDetailsService administradorDetailsService;
@@ -30,20 +30,20 @@ public class JwtAuthFilter
       HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
 
-    // 1. Lê o header "Authorization: Bearer <token>"
+    // Lê o header "Authorization: Bearer <token>"
     String authHeader = request.getHeader("Authorization");
 
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-      // Sem token → passa para o próximo filtro sem autenticar
+      // Sem token -> passa para o próximo filtro sem autenticar
       filterChain.doFilter(request, response);
       return;
     }
 
-    // 2. Remove o prefixo "Bearer " e extrai o token puro
+    // Remove o prefixo "Bearer " e extrai o token puro
     String token = authHeader.substring(7);
     String email = jwtUtil.extractEmail(token);
 
-    // 3. Autentica apenas se ainda não estiver autenticado nesta request
+    // Autentica apenas se ainda não estiver autenticado nesta request
     if (email != null &&
         SecurityContextHolder.getContext().getAuthentication() == null) {
 
@@ -51,7 +51,7 @@ public class JwtAuthFilter
           administradorDetailsService.loadUserByUsername(email);
 
       if (jwtUtil.isValid(token, userDetails)) {
-        // 4. Cria o objeto de autenticação e coloca no contexto
+        // Cria o objeto de autenticação e coloca no contexto
         UsernamePasswordAuthenticationToken auth =
             new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities()
@@ -63,7 +63,7 @@ public class JwtAuthFilter
       }
     }
 
-    // 5. Continua a cadeia de filtros
+    // Continua a cadeia de filtros
     filterChain.doFilter(request, response);
   }
 }

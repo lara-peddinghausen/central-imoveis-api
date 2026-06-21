@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile; // ◄ IMPORTANTE IMPORTAR
+import org.springframework.web.multipart.MultipartFile;
 
 import com.centraldeimoveis.api.dto.imovel.DadosAtualizaImovel;
 import com.centraldeimoveis.api.dto.imovel.DadosCadastroImovel;
@@ -19,7 +19,6 @@ import com.centraldeimoveis.api.repository.ProprietarioRepository;
 import jakarta.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -73,11 +72,10 @@ public class ImovelController {
             }
         }
 
-        // 🚀 SALVA ANTES DE RETORNAR: Assim o banco gera o ID automático (Identity)
+        // SALVA ANTES DE RETORNAR: o banco gera o ID automático (Identity)
         var imovelSalvo = imovelRepository.save(imovel);
 
-        // 🚀 RETORNA O OBJETO COMPLETO: Agora o front-end terá acesso a
-        // resposta.data.id
+        // RETORNA O OBJETO COMPLETO: o front-end terá acesso a resposta.data.id
         return ResponseEntity.status(201).body(imovelSalvo);
     }
 
@@ -87,8 +85,7 @@ public class ImovelController {
             @RequestParam(required = false) Long administradorId) {
         Page<Imovel> page;
 
-        // Se o React Native passar o id na URL (?administradorId=2), filtra. Caso
-        // contrário, traz todos.
+        // Se o React Native passar o id na URL (?administradorId=2), filtra. Caso contrário, traz todos.
         if (administradorId != null) {
             page = imovelRepository.findByAdministradorId(administradorId, paginacao);
         } else {
@@ -130,7 +127,6 @@ public class ImovelController {
         // Busca o proprietário diretamente do repository se o ID foi enviado
         Proprietario proprietario = null;
         if (dados.proprietario() != null) {
-            // Removido o .getRepository() daqui:
             proprietario = proprietarioRepository.getReferenceById(dados.proprietario());
         }
 

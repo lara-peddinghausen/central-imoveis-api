@@ -1,4 +1,4 @@
-package com.centraldeimoveis.api.service;
+package com.centraldeimoveis.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-// 🚀 Imports corrigidos e limpos para a nova estrutura de pastas: 
 import com.centraldeimoveis.api.repository.AdministradorRepository;
 
 @Service
@@ -18,12 +17,12 @@ public class AdministradorDetailsService implements UserDetailsService {
 @Override
 public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
     
-// 1. Busca o administrador de forma explícita (Adicionado "administrador =")
+// Busca o administrador de forma explícita
 com.centraldeimoveis.api.model.administrador.Administrador administrador = administradorRepository
     .findByEmail(email)
     .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com o e-mail: " + email));
     
-// 2. Retorna a variável configurada
+// Retorna a variável configurada
 return administrador;
 }
 }

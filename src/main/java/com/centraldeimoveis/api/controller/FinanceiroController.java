@@ -12,10 +12,7 @@ import com.centraldeimoveis.api.dto.financeiro.DadosListagemFinanceiro;
 import com.centraldeimoveis.api.model.financeiro.Financeiro;
 import com.centraldeimoveis.api.repository.FinanceiroRepository;
 import com.centraldeimoveis.api.repository.ImovelRepository;
-import com.centraldeimoveis.api.service.FinanceiroService;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.centraldeimoveis.api.services.FinanceiroService;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -69,20 +66,16 @@ public class FinanceiroController {
     // financeiro.exclusaoLogica();
     // }
 
-    // Rota corrigida para não usar o "path" duplicado diretamente e sim mapear um
-    // sub-recurso se necessário,
-    // mas mantida na mesma ordem estrutural que você enviou.
     @PostMapping("/movimentacao") 
     @Transactional
     public void cadastrarMovimentacao(@RequestBody @Valid DadosCadastroFinanceiro dados) {
-        
-        // Chama a Service que executa as validações e salva no PostgreSQL
+
         financeiroService.registrarMovimentacao(dados);
         
-        // Sem return! O Spring envia automaticamente o status 200 OK para o celular
+        // Sem return. O Spring envia automaticamente o status 200 OK para o celular
     }
 
-    // Rota que alimenta o gráfico do React Native (visto na tabela de rotas do PDF)
+    // Rota que alimenta o gráfico do React Native
     @GetMapping("/{id}/financeiro/fluxo")
     public DadosFluxoFinanceiro visualizarFluxoFinanceiro(
             @PathVariable Integer id,
