@@ -52,6 +52,24 @@ public ResponseEntity<Object> cadastrar(@RequestBody @Valid DadosCadastroProprie
     
     return ResponseEntity.status(201).body(salvo);
 }
+
+    @GetMapping
+    public Page<DadosListagemProprietario> listarPorPagina(Pageable paginacao) {
+        return proprietarioRepository.findAll(paginacao).map(DadosListagemProprietario::new);
+    }
+
+    @GetMapping("/{id}") // Mapeia a rota GET /proprietario/{id}
+    public ResponseEntity<Object> buscarPorId(@PathVariable Integer id) {
+        // Verifica se o proprietário existe no banco de dados
+        if (!proprietarioRepository.existsById(id)) {
+            return ResponseEntity.status(404).body("Proprietário não encontrado.");
+        }
+        
+        // Busca a entidade e retorna os dados dela com status 200 OK
+        var proprietario = proprietarioRepository.getReferenceById(id);
+        return ResponseEntity.ok(proprietario);
+    }
+
     @PutMapping
     @Transactional
     public void atualizar(@RequestBody DadosAtualizaProprietario dados) {
