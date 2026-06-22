@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication; // 🚀 ADICIONADO
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -42,16 +42,14 @@ public class AdministradorController {
         return ResponseEntity.created(uri).build();
     }
 
-    // ── 🚀 NOVA ROTA: GET /administrador/perfil ────────────────────────────
-    // Retorna as informações do Administrador que está logado atualmente no celular.
-    // O Spring Security lê o Token JWT enviado no Header e injeta o objeto "auth" automaticamente.
+    // Retorna as informações do Administrador que está logado atualmente no celular. O Spring Security lê o Token JWT enviado no Header e injeta o objeto "auth" automaticamente.
     @GetMapping("/perfil")
     public ResponseEntity<?> obterPerfilLogado(Authentication auth) {
         var administrador = administradorRepository
             .findByEmail(auth.getName()) // auth.getName() extrai o e-mail de dentro do Token JWT!
             .orElseThrow(() -> new RuntimeException("Administrador logado não encontrado"));
 
-        // Retorna um JSON seguro com os dados do perfil (Nome, E-mail, CPF) e SEM A SENHA!
+        // Retorna um JSON seguro com os dados do perfil (Nome, E-mail, CPF)
         return ResponseEntity.ok(Map.of(
             "id", administrador.getId(),
             "nome", administrador.getNome(),
@@ -70,13 +68,13 @@ public class AdministradorController {
     public ResponseEntity<Void> atualizar(@RequestBody DadosAtualizaAdministrador dados) {
         var administrador = administradorRepository.getReferenceById(dados.id());
         administrador.atualizarAdministrador(dados);
-        return ResponseEntity.ok().build(); // Adicionado retorno HTTP 200 limpo
+        return ResponseEntity.ok().build(); // Retorno HTTP 200 limpo
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> excluir(@PathVariable Integer id) {
         administradorRepository.deleteById(id);
-        return ResponseEntity.noContent().build(); // Adicionado retorno HTTP 204 padrão REST
+        return ResponseEntity.noContent().build(); // Retorno HTTP 204 padrão REST
     }
 }

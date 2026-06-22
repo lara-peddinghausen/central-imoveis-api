@@ -35,27 +35,25 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest req) {
         try {
-            // 1. O Spring Security valida o e-mail e a senha encriptada automaticamente
+            // O Spring Security valida o e-mail e a senha encriptada automaticamente
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(req.email(), req.senha()));
 
-            // Busca o administrador do banco para termos acesso aos dados dele (nome,
-            // e-mail, etc.)
+            // Busca o administrador do banco para ter acesso aos dados dele (nome, e-mail, etc.)
             var administrador = administradorRepository.findByEmail(req.email())
                     .orElseThrow(() -> new BadCredentialsException("Usuário não encontrado"));
 
-            // 2. Gera o token JWT com o e-mail do Administrador
+            // Gera o token JWT com o e-mail do Administrador
             String token = jwtUtil.generateToken(req.email());
 
-            // 🚀 3. RETORNO ATUALIZADO: Enviando todos os dados para o React Native salvar
-            // e usar no Perfil!
+            // Enviando todos os dados para o React Native salvar e usar no Perfil!
             return ResponseEntity.ok(new AuthResponse(
                     token,
                     administrador.getEmail(),
                     "ROLE_ADMIN",
                     administrador.getId(),
-                    administrador.getNome(), // ◄ NOVO
-                    administrador.getCpf(), // ◄ NOVO
+                    administrador.getNome(), 
+                    administrador.getCpf(), 
                     administrador.getDataNascimento() != null ? administrador.getDataNascimento().toString() : null // ◄                                                                                                   // nulo)
             ));
 
