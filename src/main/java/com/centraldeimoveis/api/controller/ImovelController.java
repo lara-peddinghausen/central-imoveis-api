@@ -72,10 +72,10 @@ public class ImovelController {
             }
         }
 
-        // SALVA ANTES DE RETORNAR: o banco gera o ID automático (Identity)
+        // Salva antes de retornar: o banco gera o ID automático (Identity)
         var imovelSalvo = imovelRepository.save(imovel);
 
-        // RETORNA O OBJETO COMPLETO: o front-end terá acesso a resposta.data.id
+        // Retornar o objeto completo: o front-end terá acesso a resposta.data.id
         return ResponseEntity.status(201).body(imovelSalvo);
     }
 
@@ -119,19 +119,43 @@ public class ImovelController {
         return ResponseEntity.ok("Proprietário vinculado com sucesso!");
     }
 
-    @PutMapping
+    @PostMapping("/atualizar/{id}") // @PostMapping para aceitar o Record imutável via FormData
     @Transactional
-    public void atualizar(@RequestBody DadosAtualizaImovel dados) {
-        var imovel = imovelRepository.getReferenceById(dados.id());
+    public ResponseEntity<Object> atualizar(
+            @PathVariable Integer id, 
+            @ModelAttribute @jakarta.validation.Valid DadosAtualizaImovel dados, 
+            @RequestParam(value = "foto", required = false) MultipartFile arquivoFoto) {
 
-        // Busca o proprietário diretamente do repository se o ID foi enviado
-        Proprietario proprietario = null;
-        if (dados.proprietario() != null) {
-            proprietario = proprietarioRepository.getReferenceById(dados.proprietario());
+        System.out.println("DADOS RECEBIDOS DO FRONT: " + dados);
+
+        if (!imovelRepository.existsById(id)) {
+            return ResponseEntity.status(404).body("Imóvel não encontrado.");
         }
 
-        // Repassa os dados mapeados para o Model se encarregar de atualizar
-        imovel.atualizarImovel(dados, proprietario);
+        var imovel = imovelRepository.getReferenceById(id);
+
+        if (arquivoFoto != null && !arquivoFoto.isEmpty()) {
+            try {
+                String diretorioDestino = "C:/Users/LaraP/OneDrive/Desktop/Central de imóveis - Backend/uploads/";
+
+                String extensao = arquivoFoto.getOriginalFilename()
+                        .substring(arquivoFoto.getOriginalFilename().lastIndexOf("."));
+                String nomeDoArquivo = java.util.UUID.randomUUID().toString() + extensao;
+                File destino = new File(diretorioDestino + nomeDoArquivo);
+                arquivoFoto.transferTo(destino);
+
+                String urlDaImagem = "/uploads/" + nomeDoArquivo;
+                imovel.setFotoUrl(urlDaImagem);
+
+            } catch (IOException e) {
+                return ResponseEntity.status(500).body("Erro ao salvar o novo arquivo de imagem.");
+            }
+        }
+
+        // Repassa os dados preenchidos para atualizar o modelo
+        imovel.atualizarImovel(dados, null);
+
+        return ResponseEntity.ok(imovel);
     }
 
     @DeleteMapping("/{id}")
