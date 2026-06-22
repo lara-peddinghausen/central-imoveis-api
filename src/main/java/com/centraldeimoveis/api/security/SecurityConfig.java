@@ -49,6 +49,7 @@ public class SecurityConfig {
             .requestMatchers(org.springframework.http.HttpMethod.POST, "/administrador").permitAll() // Cadastro público do AdministradorController
             .requestMatchers("/uploads/**").permitAll() // Atualizar conforme pasta usada para salvar imagens
             .requestMatchers("/imovel", "/imovel/**").hasRole("ADMIN")
+            .requestMatchers("/proprietario", "/proprietario/**").hasRole("ADMIN")
             .anyRequest().authenticated() // Todo o resto exige o token JWT
         )
 
