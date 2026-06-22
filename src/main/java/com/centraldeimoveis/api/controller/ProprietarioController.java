@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.centraldeimoveis.api.dto.proprietario.DadosAtualizaProprietario;
 import com.centraldeimoveis.api.dto.proprietario.DadosCadastroProprietario;
 import com.centraldeimoveis.api.dto.proprietario.DadosListagemProprietario;
@@ -33,25 +32,25 @@ public class ProprietarioController {
     private ProprietarioRepository proprietarioRepository;
 
     @PostMapping
-@Transactional
-public ResponseEntity<Object> cadastrar(@RequestBody @Valid DadosCadastroProprietario dados) {
-    
-    // Limpa o CPF tirando pontos e traços para testar o valor puro
-    String cpfLimpo = dados.cpf().replaceAll("\\D", "");
+    @Transactional
+    public ResponseEntity<Object> cadastrar(@RequestBody @Valid DadosCadastroProprietario dados) {
 
-    // Se o CPF já existir, não cadastra
-    if (proprietarioRepository.existsByCpf(cpfLimpo)) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("mensagem", "Este CPF já está cadastrado no sistema."));
+        // Limpa o CPF tirando pontos e traços para testar o valor puro
+        String cpfLimpo = dados.cpf().replaceAll("\\D", "");
+
+        // Se o CPF já existir, não cadastra
+        if (proprietarioRepository.existsByCpf(cpfLimpo)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("mensagem", "Este CPF já está cadastrado no sistema."));
+        }
+
+        // Se passou pelas validações, salva normalmente
+        var proprietario = new Proprietario(dados);
+        var salvo = proprietarioRepository.save(proprietario);
+
+        return ResponseEntity.status(201).body(salvo);
     }
-
-    // Se passou pelas validações, salva normalmente
-    var proprietario = new Proprietario(dados);
-    var salvo = proprietarioRepository.save(proprietario);
-    
-    return ResponseEntity.status(201).body(salvo);
-}
 
     @GetMapping
     public Page<DadosListagemProprietario> listarPorPagina(Pageable paginacao) {
@@ -72,9 +71,26 @@ public ResponseEntity<Object> cadastrar(@RequestBody @Valid DadosCadastroProprie
 
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody DadosAtualizaProprietario dados) {
-        var admnistrador = proprietarioRepository.getReferenceById(dados.id());
-        admnistrador.atualizarProprietario(dados);
+    public void atualizar(@RequestBody DadosAtualizaProprietario dados, @PathVariable Integer id) {
+
+        var proprietario = proprietarioRepository.getReferenceById(id);
+        proprietario.atualizarProprietario(dados);
+    }
+
+    @PutMapping("/{id}") 
+    @Transactional
+    public ResponseEntity<Object> atualizar(
+            @PathVariable Integer id, // Captura o ID da URL
+            @RequestBody @jakarta.validation.Valid DadosAtualizaProprietario dados) { // Recebe o JSON Puro
+
+        if (!proprietarioRepository.existsById(id)) {
+            return ResponseEntity.status(404).body("Proprietário não encontrado.");
+        }
+
+        var proprietario = proprietarioRepository.getReferenceById(id);
+        proprietario.atualizarProprietario(dados);
+
+        return ResponseEntity.ok(proprietario);
     }
 
     // Exclusão
