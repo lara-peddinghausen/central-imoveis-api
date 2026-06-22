@@ -10,7 +10,8 @@ O projeto foi concebido para resolver os gargalos de gerenciamento manual em pla
 ## Tecnologias e Ferramentas Utilizadas
 * **Framework Principal:** Spring Boot (Java)
 * **Persistência de Dados:** Spring Data JPA / Hibernate
-* **Banco de Dados:** PostgreSQL (Ambiente de desenvolvimento local)
-* **Segurança e Autenticação:** Spring Security
+* **Banco de Dados:** SQLServer (Ambiente de desenvolvimento local)
+* **Segurança e Autenticação:** Spring Security e JWT (JSON Web Tokens)
+* **Validação de Dados:** Jakarta Validation (Hibernate Validator)
 * **Gerenciador de Dependências:** Maven
 
