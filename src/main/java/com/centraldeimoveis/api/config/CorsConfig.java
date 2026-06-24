@@ -23,6 +23,7 @@ public class CorsConfig implements WebMvcConfigurer {
   @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:///C:/Users/LaraP/OneDrive/Desktop/Central de imóveis - Backend/uploads/");
+                // .addResourceLocations("file:///C:/Users/LaraP/OneDrive/Desktop/Central de imóveis - Backend/uploads/");
+                .addResourceLocations("file:///C:/Users/36129382024.2n/Desktop/central_de_imoveis/uploads/");
     }
 }
