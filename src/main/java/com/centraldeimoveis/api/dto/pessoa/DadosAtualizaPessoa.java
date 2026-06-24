@@ -14,7 +14,6 @@ public record DadosAtualizaPessoa(
     String email,
 
     String nome,
-    String senha,
 
     @Past(message = "A data de nascimento deve ser uma data passada") 
     @JsonFormat(pattern = "dd/MM/yyyy") 
