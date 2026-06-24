@@ -138,7 +138,8 @@ public class ImovelController {
 
         if (arquivoFoto != null && !arquivoFoto.isEmpty()) {
             try {
-                String diretorioDestino = "C:/Users/LaraP/OneDrive/Desktop/Central de imóveis - Backend/uploads/";
+                // String diretorioDestino = "C:/Users/LaraP/OneDrive/Desktop/Central de imóveis - Backend/uploads/";
+                String diretorioDestino = "C:/Users/36129382024.2n/Desktop/central_de_imoveis/uploads/";
 
                 String extensao = arquivoFoto.getOriginalFilename()
                         .substring(arquivoFoto.getOriginalFilename().lastIndexOf("."));
