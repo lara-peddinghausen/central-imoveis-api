@@ -14,7 +14,8 @@ import lombok.*;
 /**
  * Representa uma locação no sistema de central de imóveis.
  *
- * Contém informações como status, datas de início e término, aluguel, observação, imóvel e pessoa vinculados.
+ * Contém informações como status, datas de início e término, aluguel,
+ * observação, imóvel e pessoa vinculados.
  *
  * @author Lara Peddinghausen
  */
@@ -43,14 +44,15 @@ public class Locacao {
     @JoinColumn(name = "IdImovel")
     private Imovel imovel;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     @JoinColumn(name = "IdPessoa")
     private Pessoa pessoa;
 
     /**
      * Cria uma locação a partir dos dados de cadastro.
      *
-     * @param dados objeto contendo as informações necessárias para criação da locação
+     * @param dados  objeto contendo as informações necessárias para criação da
+     *               locação
      * @param imovel o imóvel vinculado à locação
      * @param pessoa a pessoa vinculada à locação
      */
@@ -70,7 +72,7 @@ public class Locacao {
      *
      * @param dados objeto com os dados para atualização
      */
-    public void atualizarLocacao(DadosAtualizaLocacao dados) {
+    public void atualizarLocacao(DadosAtualizaLocacao dados,  Pessoa novaPessoa) {
         if (dados.dataTermino() != null) {
             this.dataTermino = dados.dataTermino();
         }
@@ -82,6 +84,9 @@ public class Locacao {
         }
         if (dados.status() != null) {
             this.status = dados.status();
+        }
+        if (dados.pessoa() != null) {
+            this.pessoa = novaPessoa;
         }
     }
 

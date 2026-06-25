@@ -16,7 +16,9 @@ public record DadosAtualizaLocacao(
 
     String observacao,
 
-    Status status
+    Status status, 
+
+    Integer pessoa
 ) {
 
 }

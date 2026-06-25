@@ -28,7 +28,6 @@ public record DadosCadastroLocacao(
     @NotNull
     Integer imovel,
 
-    @NotNull
     Integer pessoa
 
 ) {
