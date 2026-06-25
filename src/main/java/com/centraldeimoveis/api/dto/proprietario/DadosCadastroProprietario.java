@@ -18,7 +18,6 @@ public record DadosCadastroProprietario(
     @NotBlank
     String nome,
 
-    @NotNull
     @Past(message = "A data de nascimento deve ser uma data passada")
     @JsonFormat(pattern = "dd/MM/yyyy")
     LocalDate dataNascimento,
