@@ -51,7 +51,8 @@ public class ImovelController {
 
         if (arquivoFoto != null && !arquivoFoto.isEmpty()) {
             try {
-
+                // Caminho do diretório deve ser atualizado conforme pasta que será usada para salvar as fotos. Atualizar em: CorsFilter e ImovelController (métodos: cadastrar e /atualizar/{id})
+                // A pasta DEVE se chamar uploads a fim de evitar mais alterações no código
                 // String diretorioDestino = "C:/Users/LaraP/OneDrive/Desktop/Central de imóveis - Backend/uploads/";
                 String diretorioDestino = "C:/Users/36129382024.2n/Desktop/central_de_imoveis/uploads/";
 
@@ -124,8 +125,8 @@ public class ImovelController {
     @PostMapping("/atualizar/{id}") // @PostMapping para aceitar o Record imutável via FormData
     @Transactional
     public ResponseEntity<Object> atualizar(
-            @PathVariable Integer id, 
-            @ModelAttribute @jakarta.validation.Valid DadosAtualizaImovel dados, 
+            @PathVariable Integer id,
+            @ModelAttribute @jakarta.validation.Valid DadosAtualizaImovel dados,
             @RequestParam(value = "foto", required = false) MultipartFile arquivoFoto) {
 
         System.out.println("DADOS RECEBIDOS DO FRONT: " + dados);
@@ -138,6 +139,8 @@ public class ImovelController {
 
         if (arquivoFoto != null && !arquivoFoto.isEmpty()) {
             try {
+                // Caminho do diretório deve ser atualizado conforme pasta que será usada para salvar as fotos. Atualizar em: CorsFilter e ImovelController (métodos: cadastrar e /atualizar/{id})
+                // A pasta DEVE se chamar uploads a fim de evitar mais alterações no código
                 // String diretorioDestino = "C:/Users/LaraP/OneDrive/Desktop/Central de imóveis - Backend/uploads/";
                 String diretorioDestino = "C:/Users/36129382024.2n/Desktop/central_de_imoveis/uploads/";
 
