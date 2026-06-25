@@ -17,6 +17,7 @@ import com.centraldeimoveis.api.dto.locacao.DadosAtualizaLocacao;
 import com.centraldeimoveis.api.dto.locacao.DadosCadastroLocacao;
 import com.centraldeimoveis.api.dto.locacao.DadosListagemLocacao;
 import com.centraldeimoveis.api.model.locacao.Locacao;
+import com.centraldeimoveis.api.model.locacao.Status;
 import com.centraldeimoveis.api.model.pessoa.Pessoa;
 import com.centraldeimoveis.api.repository.ImovelRepository;
 import com.centraldeimoveis.api.repository.LocacaoRepository;
@@ -63,6 +64,22 @@ public class LocacaoController {
     @GetMapping
     public Page<DadosListagemLocacao> listarPorPagina(Pageable paginacao) {
         return locacaoRepository.findAll(paginacao).map(DadosListagemLocacao::new);
+    }
+
+    @GetMapping("/imovel/{imovelId}")
+    public ResponseEntity<Locacao> buscarPorImovel(@PathVariable Integer imovelId) {
+        // Altere aqui para a lógica do seu repositório que busca pelo ID do imóvel
+        var locacaoOpt = locacaoRepository.findByImovelIdAndStatus(imovelId, Status.ATIVA); 
+        
+        return locacaoOpt.map(ResponseEntity::ok)
+                         .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // 3. SE você tiver um método para buscar a locação pelo ID dela mesma: GET /locacao/7
+    @GetMapping("/{id}")
+    public ResponseEntity<Locacao> buscarPorId(@PathVariable Integer id) {
+        var locacao = locacaoRepository.getReferenceById(id);
+        return ResponseEntity.ok(locacao);
     }
 
     @PutMapping
