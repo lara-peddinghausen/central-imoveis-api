@@ -3,6 +3,7 @@ package com.centraldeimoveis.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +30,12 @@ public class PessoaController {
 
     @PostMapping
     @Transactional
-    public void cadastrar(@RequestBody DadosCadastroPessoa dados) {
-        pessoaRepository.save(new Pessoa(dados));
+    public ResponseEntity<Pessoa> cadastrar(@RequestBody @jakarta.validation.Valid DadosCadastroPessoa dados) {
+        var pessoa = new Pessoa(dados);
+        pessoaRepository.save(pessoa);
+        
+        // Devolve a pessoa com o ID gerado pelo banco para o Front-end
+        return ResponseEntity.status(201).body(pessoa);
     }
 
     @GetMapping
