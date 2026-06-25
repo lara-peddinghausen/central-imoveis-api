@@ -50,6 +50,8 @@ public class SecurityConfig {
             .requestMatchers("/uploads/**").permitAll() // Atualizar conforme pasta usada para salvar imagens
             .requestMatchers("/imovel", "/imovel/**").hasRole("ADMIN")
             .requestMatchers("/proprietario", "/proprietario/**").hasRole("ADMIN")
+            .requestMatchers("/locacao", "/locacao/**").hasRole("ADMIN")
+            .requestMatchers("/pessoa", "/pessoa/**").hasRole("ADMIN")
             .anyRequest().authenticated() // Todo o resto exige o token JWT
         )
 
