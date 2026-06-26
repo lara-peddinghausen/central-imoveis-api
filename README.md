@@ -15,3 +15,7 @@ O projeto foi concebido para resolver os gargalos de gerenciamento manual em pla
 * **Validação de Dados:** Jakarta Validation (Hibernate Validator)
 * **Gerenciador de Dependências:** Maven
 
+## Documentação
+Mais detalhes sobre instalação e a API estão em `docs/`.
+Veja `docs/API.md` para a referência atualizada dos endpoints e `docs/OVERVIEW.md` para um resumo rápido.
+
