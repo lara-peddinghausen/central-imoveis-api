@@ -1,5 +1,7 @@
 package com.centraldeimoveis.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,41 +68,70 @@ public class LocacaoController {
         return locacaoRepository.findAll(paginacao).map(DadosListagemLocacao::new);
     }
 
+    @GetMapping("/historico/{imovelId}")
+    public ResponseEntity<List<Locacao>> buscarHistoricoPorImovel(@PathVariable Integer imovelId) {
+        List<Locacao> historico = locacaoRepository.findByImovelId(imovelId);
+        return ResponseEntity.ok(historico);
+    }
+
     @GetMapping("/imovel/{imovelId}")
     public ResponseEntity<Locacao> buscarPorImovel(@PathVariable Integer imovelId) {
         // Altere aqui para a lógica do seu repositório que busca pelo ID do imóvel
-        var locacaoOpt = locacaoRepository.findByImovelIdAndStatus(imovelId, Status.ATIVA); 
-        
+        var locacaoOpt = locacaoRepository.findByImovelIdAndStatus(imovelId, Status.ATIVA);
+
         return locacaoOpt.map(ResponseEntity::ok)
-                         .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // 3. SE você tiver um método para buscar a locação pelo ID dela mesma: GET /locacao/7
+    // SE tiver um método para buscar a locação pelo ID dela mesma: GET /locacao/7
     @GetMapping("/{id}")
     public ResponseEntity<Locacao> buscarPorId(@PathVariable Integer id) {
-        var locacao = locacaoRepository.getReferenceById(id);
-        return ResponseEntity.ok(locacao);
+        // findById retorna um Optional seguro
+        return locacaoRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping
     @Transactional
     public ResponseEntity<Locacao> atualizar(@RequestBody @jakarta.validation.Valid DadosAtualizaLocacao dados) {
-        // Busca a locação atual
-        var locacao = locacaoRepository.getReferenceById(dados.id());
+
+        var locacao = locacaoRepository.findById(dados.id())
+                .orElseThrow(() -> new jakarta.persistence.EntityNotFoundException("Locação não encontrada"));
 
         // Busca a pessoa encontrada pelo ID enviado
         Pessoa pessoa = null;
         if (dados.pessoa() != null) {
-            pessoa = pessoaRepository.getReferenceById(dados.pessoa());
+            pessoa = pessoaRepository.findById(dados.pessoa()).orElse(null);
         }
 
         // Modifica os atributos na entidade
         locacao.atualizarLocacao(dados, pessoa);
 
-        // Força o Hibernate a gravar as alterações da transação
+        // Retorna a entidade atualizada
+        return ResponseEntity.ok(locacao);
+    }
+
+    @PutMapping("/{id}/cancelar")
+    @Transactional
+    public ResponseEntity<Void> cancelarLocacao(@PathVariable Integer id) {
+        // Busca a locação
+        var locacao = locacaoRepository.getReferenceById(id);
+
+        // Modifica o status do contrato para CANCELADA
+        locacao.setStatus(Status.CANCELADA); // Ou use seu método interno, ex: locacao.cancelar();
+
+        // Busca o imóvel vinculado e altera o status para DISPONIVEL
+        var imovel = locacao.getImovel();
+        if (imovel != null) {
+            imovel.setStatus(com.centraldeimoveis.api.model.imovel.Status.DISPONIVEL);
+        }
+
+        // Como está com @Transactional, o save é automático ao fim do método, mas para
+        // garantir:
         locacaoRepository.save(locacao);
 
-        return ResponseEntity.ok(locacao);
+        return ResponseEntity.noContent().build();
     }
 
     // Exclusão
