@@ -24,8 +24,8 @@ import jakarta.transaction.Transactional;
 @RestController
 @RequestMapping("/pessoa")
 public class PessoaController {
-    
-        @Autowired
+
+    @Autowired
     private PessoaRepository pessoaRepository;
 
     @PostMapping
@@ -33,7 +33,7 @@ public class PessoaController {
     public ResponseEntity<Pessoa> cadastrar(@RequestBody @jakarta.validation.Valid DadosCadastroPessoa dados) {
         var pessoa = new Pessoa(dados);
         pessoaRepository.save(pessoa);
-        
+
         // Devolve a pessoa com o ID gerado pelo banco para o Front-end
         return ResponseEntity.status(201).body(pessoa);
     }
@@ -43,11 +43,24 @@ public class PessoaController {
         return pessoaRepository.findAll(paginacao).map(DadosListagemPessoa::new);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Pessoa> buscarPorId(@PathVariable Integer id) {
+        return pessoaRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody DadosAtualizaPessoa dados) {
-        var admnistrador = pessoaRepository.getReferenceById(dados.id());
-        admnistrador.atualizarPessoa(dados);
+    public ResponseEntity<Pessoa> atualizar(@RequestBody DadosAtualizaPessoa dados) {
+        // Mudamos para findById para carregar os dados de forma segura
+        var pessoa = pessoaRepository.findById(dados.id())
+                .orElseThrow(() -> new jakarta.persistence.EntityNotFoundException("Inquilino não encontrado"));
+
+        pessoa.atualizarPessoa(dados);
+
+        // Retorna HTTP 200 OK com o objeto atualizado
+        return ResponseEntity.ok(pessoa);
     }
 
     // Exclusão
@@ -57,11 +70,11 @@ public class PessoaController {
         pessoaRepository.deleteById(id);
     }
 
-    // Exclusão lógica 
+    // Exclusão lógica
     // @DeleteMapping("/{id}")
     // @Transactional
     // public void alterarStatus(@PathVariable Integer id) {
-    //     var pessoa = pessoaRepository.getReferenceById(id);
-    //     pessoa.exclusaoLogica();
+    // var pessoa = pessoaRepository.getReferenceById(id);
+    // pessoa.exclusaoLogica();
     // }
 }
