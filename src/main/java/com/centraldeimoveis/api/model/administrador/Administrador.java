@@ -19,7 +19,8 @@ import lombok.*;
 /**
  * Representa um administrador do sistema de central de imóveis.
  * 
- * Contém informações pessoais e credenciais de acesso, como nome, e-mail, senha, CPF e data de nascimento.
+ * Contém informações pessoais e credenciais de acesso, como nome, e-mail,
+ * senha, CPF e data de nascimento.
  * 
  * @author Lara Peddinghausen
  */
@@ -42,14 +43,16 @@ public class Administrador implements UserDetails {
 
     @Column(nullable = false, unique = true, length = 150)
     private String email;
-    
+
     @Column(nullable = false, length = 150)
     private String nome;
-    
+
     private LocalDate dataNascimento;
 
     @Column(unique = true, length = 11)
     private String cpf;
+
+    private Boolean ativo = true; // Todo administrador novo nasce ativo
 
     // @OneToMany(mappedBy = "administrador")
     // private List<Imovel> imoveis;
@@ -57,7 +60,8 @@ public class Administrador implements UserDetails {
     /**
      * Cria um administrador a partir dos dados de cadastro.
      *
-     * @param dados objeto contendo as informações necessárias para criação do administrador
+     * @param dados objeto contendo as informações necessárias para criação do
+     *              administrador
      */
     public Administrador(DadosCadastroAdministrador dados) {
         this.senha = dados.senha();
@@ -85,6 +89,10 @@ public class Administrador implements UserDetails {
         }
     }
 
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Retorna ROLE_ADMIN direto em memória, economizando uma coluna no seu banco
@@ -92,21 +100,33 @@ public class Administrador implements UserDetails {
     }
 
     @Override
-    public String getPassword() { return this.senha; }
+    public String getPassword() {
+        return this.senha;
+    }
 
     @Override
-    public String getUsername() { return this.email; }
+    public String getUsername() {
+        return this.email;
+    }
 
     @Override
-    public boolean isAccountNonExpired() { return true; }
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
     @Override
-    public boolean isAccountNonLocked() { return true; }
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
     @Override
-    public boolean isCredentialsNonExpired() { return true; }
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
     @Override
-    public boolean isEnabled() { return true; }
+    public boolean isEnabled() {
+        return true;
+    }
 
 }

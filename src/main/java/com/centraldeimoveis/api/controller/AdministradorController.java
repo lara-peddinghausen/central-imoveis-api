@@ -30,32 +30,34 @@ public class AdministradorController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Void> cadastrar(@RequestBody DadosCadastroAdministrador dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<Void> cadastrar(@RequestBody DadosCadastroAdministrador dados,
+            UriComponentsBuilder uriBuilder) {
         var administrador = new Administrador(dados);
-        
+
         String senhaCriptografada = passwordEncoder.encode(dados.senha());
         administrador.setSenha(senhaCriptografada);
-        
+
         administradorRepository.save(administrador);
-        
+
         var uri = uriBuilder.path("/administrador/{id}").buildAndExpand(administrador.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
-    // Retorna as informações do Administrador que está logado atualmente no celular. O Spring Security lê o Token JWT enviado no Header e injeta o objeto "auth" automaticamente.
+    // Retorna as informações do Administrador que está logado atualmente no
+    // celular. O Spring Security lê o Token JWT enviado no Header e injeta o objeto
+    // "auth" automaticamente.
     @GetMapping("/perfil")
     public ResponseEntity<?> obterPerfilLogado(Authentication auth) {
         var administrador = administradorRepository
-            .findByEmail(auth.getName()) // auth.getName() extrai o e-mail de dentro do Token JWT!
-            .orElseThrow(() -> new RuntimeException("Administrador logado não encontrado"));
+                .findByEmail(auth.getName()) // auth.getName() extrai o e-mail de dentro do Token JWT!
+                .orElseThrow(() -> new RuntimeException("Administrador logado não encontrado"));
 
         // Retorna um JSON seguro com os dados do perfil (Nome, E-mail, CPF)
         return ResponseEntity.ok(Map.of(
-            "id", administrador.getId(),
-            "nome", administrador.getNome(),
-            "email", administrador.getEmail(),
-            "cpf", administrador.getCpf() != null ? administrador.getCpf() : ""
-        ));
+                "id", administrador.getId(),
+                "nome", administrador.getNome(),
+                "email", administrador.getEmail(),
+                "cpf", administrador.getCpf() != null ? administrador.getCpf() : ""));
     }
 
     @GetMapping
@@ -76,5 +78,18 @@ public class AdministradorController {
     public ResponseEntity<Void> excluir(@PathVariable Integer id) {
         administradorRepository.deleteById(id);
         return ResponseEntity.noContent().build(); // Retorno HTTP 204 padrão REST
+    }
+
+    @DeleteMapping("/perfil")
+    @Transactional // Como o método está anotado com @Transactional, o Hibernate salvará a alteração automaticamente no banco ao finalizar o método.
+    public ResponseEntity<Void> excluirPerfilLogado(Authentication auth) {
+        var administrador = administradorRepository
+                .findByEmail(auth.getName())
+                .orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
+
+        // Exclusão lógica: Inativa o perfil em vez de apagar do banco
+        administrador.setAtivo(false);
+
+        return ResponseEntity.noContent().build(); // Retorna 204 No Content padrão
     }
 }
