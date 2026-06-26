@@ -72,13 +72,7 @@ public class Locacao {
      *
      * @param dados objeto com os dados para atualização
      */
-    public void atualizarLocacao(DadosAtualizaLocacao dados,  Pessoa novaPessoa) {
-        if (dados.dataTermino() != null) {
-            this.dataTermino = dados.dataTermino();
-        }
-        if (dados.aluguel() != null) {
-            this.aluguel = dados.aluguel();
-        }
+    public void atualizarLocacao(DadosAtualizaLocacao dados, Pessoa novaPessoa) {
         if (dados.observacao() != null) {
             this.observacao = dados.observacao();
         }
@@ -87,6 +81,9 @@ public class Locacao {
         }
         if (dados.pessoa() != null) {
             this.pessoa = novaPessoa;
+        }
+        if (dados.aluguel() != null) {
+            this.aluguel = dados.aluguel();
         }
     }
 
