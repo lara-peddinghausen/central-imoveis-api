@@ -47,6 +47,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(org.springframework.http.HttpMethod.POST, "/auth/login").permitAll() // Login público
             .requestMatchers(org.springframework.http.HttpMethod.POST, "/administrador").permitAll() // Cadastro público do AdministradorController
+            .requestMatchers("/administrador", "/administrador/**").hasRole("ADMIN")
             .requestMatchers("/uploads/**").permitAll() // Atualizar conforme pasta usada para salvar imagens
             .requestMatchers("/imovel", "/imovel/**").hasRole("ADMIN")
             .requestMatchers("/proprietario", "/proprietario/**").hasRole("ADMIN")
