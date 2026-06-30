@@ -13,17 +13,19 @@
 
 ### Tela de login
 - Arquivo mobile: `app/login.js`
-- Endpoint backend: `POST /auth/login`
-- Controller: `src/main/java/com/centraldeimoveis/api/controller/AuthController.java`
-- Método: `login(@Valid @RequestBody LoginRequest req)`
+- Endpoint backend: 
+ - `POST /auth/login`
+    - Controller: `src/main/java/com/centraldeimoveis/api/controller/AuthController.java`
+    - Método: `login(@Valid @RequestBody LoginRequest req)`
 - Payload: `{ email, senha }`
 - Retorno: `AuthResponse` com `token`, `email`, `role`, `id`, `nome`, `cpf`, `dataNascimento`
 
 ### Tela de cadastro de administrador
 - Arquivo mobile: `app/cadastrar-administrador.js`
-- Endpoint backend: `POST /administrador`
-- Controller: `src/main/java/com/centraldeimoveis/api/controller/AdministradorController.java`
-- Método: `cadastrar(@RequestBody DadosCadastroAdministrador dados, UriComponentsBuilder uriBuilder)`
+- Endpoint backend: 
+  - `POST /administrador`
+    - Controller: `src/main/java/com/centraldeimoveis/api/controller/AdministradorController.java`
+    - Método: `cadastrar(@RequestBody DadosCadastroAdministrador dados, UriComponentsBuilder uriBuilder)`
 - Payload: `{ nome, email, dataNascimento, cpf, senha }`
 
 ---
